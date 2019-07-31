@@ -9,6 +9,17 @@ body {
   background-color: salmon; 
 }
 
+.button {
+  height: 30px;
+  width: 30px;
+  background-color: salmon;
+}
+
+.button:hover{
+  transform: scale(1.05);
+  background-color: dodgerblue; 
+}
+
 .App {
   text-align: center;
 }

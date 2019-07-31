@@ -16,37 +16,51 @@ class App extends React.Component {
         this.getPosts = this.getPosts.bind(this)
     }
 
-    onLeftClick = () => {
+    onLeftClick(e) {
+        e.preventDefault();
         var userId = this.state.userId
-        if (userId === 1) {
-            this.setState({
-                userId: 10
-            })
-            this.getPosts(this.state.userId);
-        } else {
-            userId--; 
+        if (userId > 1) {
+            userId--;
             this.setState({
                 userId
             })
-            this.getPosts(this.state.userId);
+            // this.getPosts(this.state.userId);
+        } else { 
+            userId = 10;
+            this.setState({
+                userId
+            })
         }
-        
+        axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`)
+        .then(result => {
+            let posts = result.data
+            this.setState({
+                posts
+            })
+        })        
     } 
 
-    onRightClick = () => {
+    onRightClick(e) {
+        e.preventDefault();
         var userId = this.state.userId
-        if (userId === 10) {
-            this.setState({
-                userId: 1
-            })
-            this.getPosts(this.state.userId);
-        } else {
-            userId++; 
+        if (userId < 10) {
+            userId++;
             this.setState({
                 userId
             })
-            this.getPosts(this.state.userId);
+        } else {
+            userId = 1;
+            this.setState({
+                userId
+            })
         }
+        axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`)
+        .then(result => {
+            let posts = result.data
+            this.setState({
+                posts
+            })
+        })    
     } 
 
     componentDidMount() {
@@ -69,9 +83,7 @@ class App extends React.Component {
         return (
             <>
                 <h1>Cycle Through Users</h1>
-                <button onClick={this.onLeftClick}>⬅️</button>
-                <button onClick={this.onRightClick}>➡️</button>
-                <Post posts={postCopy} />
+                <Post posts={postCopy} onLeftClick={this.onLeftClick} onRightClick={this.onRightClick} />
 
             </>
         );
